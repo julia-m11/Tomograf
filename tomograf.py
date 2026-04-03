@@ -29,10 +29,10 @@ def get_pixels_on_line(x1, y1, x2, y2):
     
     return skimage.draw.line_nd(p1, p2, endpoint=True, integer=True) # zwraca dwie tablice - jedna z wierszami, druga z kolumnami
 
-img = skimage.io.imread("tomograf-obrazy/Shepp_logan.jpg")
+img = skimage.io.imread("tomograf-obrazy/Kropka.jpg")
 img_grey = skimage.color.rgb2gray(img)
 img_grey = (img_grey * 255).astype(np.uint8)
-width, height = img_grey.shape
+height, width = img_grey.shape
 
 # ------ to podawane na wejsciu przez użytkownika --------
 delta_a = 1.0 #rozmiar kroku
@@ -56,6 +56,9 @@ for view in range(len(sinogram)):
         xd, yd = detectorCords(current_angle_rad, n, phi, r, D)
         rows, cols = get_pixels_on_line(xe + offset_x, ye + offset_y, 
                                         xd + offset_x, yd + offset_y)
+        
+        rows = np.array(rows)
+        cols = np.array(cols)
         
         mask = (rows >= 0) & (rows < height) & (cols >= 0) & (cols < width)
         pixels = img_grey[rows[mask], cols[mask]]
